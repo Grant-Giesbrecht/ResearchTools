@@ -1,3 +1,5 @@
+#!/usr/local/bin/python3
+
 import pyperclip
 from colorama import Fore, Style
 import logging
