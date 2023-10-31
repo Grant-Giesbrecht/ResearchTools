@@ -9,6 +9,7 @@ TEST_MODE = False # Only display output, do not write output file.
 PRINT_MODE = False # Print output file contents
 LOG_LEVEL = logging.INFO
 OUTPUT_NAME_MOD = "_trimmed" # Thing to add before extension to distinguish between input and output file
+PROCESS_WITH_MOD = False # If the OUTPUT_NAME_MOD appears in filename, should this file still be trimmed (perhaps again)?
 
 def trim2sp_single(filename:str):
 	""" Trims a single S2P file """
@@ -30,14 +31,14 @@ def trim2sp_single(filename:str):
 			
 			# Check for header trash
 			if line[0] in trash_chars: # Skip char if matches trash
-				logging.debug(f"Skipping line ({linenum}): {line}")
+				logging.debug(f"{Fore.LIGHTBLACK_EX}\tSkipping line ({linenum}): {line}{Style.RESET_ALL}")
 				num_skip += 1
 				continue
 			
 			# Just add lines once in body
 			outlines.append(line)
 
-	logging.info(f"Skipped {num_skip} lines.")
+	logging.info(f"{Fore.LIGHTBLACK_EX}\tSkipped {num_skip} lines.{Style.RESET_ALL}")
 
 	if not TEST_MODE:
 		
@@ -47,34 +48,51 @@ def trim2sp_single(filename:str):
 			filename_out = filename + OUTPUT_NAME_MOD
 		else:
 			filename_out = filename[:dot_idx] + OUTPUT_NAME_MOD + filename[dot_idx:]
-		logging.info(f"Writing file '{filename_out}'")
+		logging.info(f"{Fore.LIGHTBLACK_EX}\tWriting file '{filename_out}'{Style.RESET_ALL}")
 		
 		# Write file
 		with open(filename_out, 'w') as foh:
 			foh.writelines(outlines)
 	
 	if PRINT_MODE:
-		print(f"{Fore.CYAN}[OUTPUT]{Fore.WHITE}:{Style.RESET_ALL}")
+		print(f"{Fore.CYAN}\t[OUTPUT]{Fore.WHITE}:{Style.RESET_ALL}")
 		
 		NUM_EA_SIDE = 5
 		
 		for idx, line in enumerate(outlines):
 			if idx <= NUM_EA_SIDE or len(outlines)-idx <= NUM_EA_SIDE:
-				print(f"\t{line.rstrip()}")
+				print(f"\t\t{line.rstrip()}")
 			if idx == NUM_EA_SIDE+1:
-				print(f"{Fore.CYAN}\t.\n\t.\n\t.{Style.RESET_ALL}")
+				print(f"{Fore.CYAN}\t\t.\n\t\t.\n\t\t.{Style.RESET_ALL}")
 
 #-----------------------------------------------------------
 
-# Parse arguments
-argv = sys.argv[2:]
+# Parse arguments, remove filenames
+files = []
+argv_check = []
+argv_all = sys.argv[1:]
+for arg_ in argv_all:	
+	# Delete files
+	if "." in arg_:
+		
+		# Check if file has already been trimemd
+		if OUTPUT_NAME_MOD in arg_:
+			if PROCESS_WITH_MOD: # Only double process if allowed
+				files.append(arg_) # Add to file list
+		else: # Add non-processed files
+			files.append(arg_) # Add to file list
+		
+	else:
+		# Add to list for getopt
+		argv_check.append(arg_)
 
+# Parse arguments
 try:
-	opts, args = getopt.getopt(sys.argv[2:], "h", ["help", "debug", "info", "warning", "error", "critical", "test", "print"])
+	opts, args = getopt.getopt(argv_check, "h", ["help", "debug", "info", "warning", "error", "critical", "test", "print"])
 except getopt.GetoptError as err:
 	print("--help for help")
 	sys.exit(2)
-	
+
 for opt, aarg in opts:	
 	if opt in ("-h", "--help"):
 		print(f"{Fore.RED}Just kidding I haven't made any help text yet. ~~OOPS~~{Style.RESET_ALL}")
@@ -100,10 +118,11 @@ cspecial = Fore.GREEN # COlor used to highlight content inside logging messages
 logging.basicConfig(format=f'{prime_color}%(levelname)s:{standard_color} %(message)s{quiet_color} | %(asctime)s{Style.RESET_ALL}', level=LOG_LEVEL)
 
 # Get filename
-if len(sys.argv) < 2:
+if len(files) < 1:
 	logging.critical(f"{Fore.RED}Requires 1 argument, name of file to process.")
 	exit()
-filename = sys.argv[1]
-logging.info(f"Reading file '{filename}'")
 
-trim2sp_single(filename)
+
+for file in files:
+	logging.info(f"Reading file  '{file}'")
+	trim2sp_single(file)
