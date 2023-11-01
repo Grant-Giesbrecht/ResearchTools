@@ -31,7 +31,7 @@ def trim2sp_single(filename:str):
 			
 			# Check for header trash
 			if line[0] in trash_chars: # Skip char if matches trash
-				logging.debug(f"{Fore.LIGHTBLACK_EX}\tSkipping line ({linenum}): {line}{Style.RESET_ALL}")
+				logging.debug(f"{Fore.LIGHTBLACK_EX}\tSkipping line ({linenum}): {line.rstrip()}{Style.RESET_ALL}")
 				num_skip += 1
 				continue
 			
