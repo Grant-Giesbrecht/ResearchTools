@@ -88,6 +88,7 @@ if IS_MAC:
 			del_idx.append(idx)
 		else:
 			sections[idx] = s.replace("\ ", " ")
+			sections[idx] = sections[idx].replace("\,", ",")
 	for di in reversed(del_idx):
 		del sections[di]
 else:
