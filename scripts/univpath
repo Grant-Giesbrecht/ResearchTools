@@ -1,5 +1,10 @@
 #!/usr/local/bin/python3
 
+# If user has copied a path, this will change the path into an
+# os.path.join style universsal thing.
+#
+#
+
 import pyperclip
 from colorama import Fore, Style
 import logging
