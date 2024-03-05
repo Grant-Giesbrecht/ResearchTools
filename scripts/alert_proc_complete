@@ -1,0 +1,66 @@
+#!/usr/local/bin/python3
+
+from py_emails import *
+import psutil
+import sys
+from colorama import Fore, Style
+import time
+
+argc = len(sys.argv)
+
+THRESHOLD = 15 # Percent threshold at which to say its finished (per core)
+NUM_BELOW = 20 # NUmber of times CPU needs to be below threshold to quit
+TIME_PAUSE = 2 # Number of seconds to pause between measurements
+
+# Check for PID
+if argc < 3:
+	print(f"Need to provide PID (1st) and email address (2nd) as arguments!")
+	exit()
+
+try:
+	PID = int(sys.argv[1])
+	EMAIL = sys.argv[2]
+except:
+	a = sys.argv[1]
+	print(f"Unable to convert '{a}' to number!")
+
+local_pass = input("Local password: ")
+
+# Access process
+proc = psutil.Process(PID)
+proc.cpu_percent()
+
+below_count = 0
+break_condition = "Unknown."
+while True:
+	
+	# Check CPU percentage
+	try:
+		pu = proc.cpu_percent()
+	except Exception as e:
+		print(f"\nExiting; Exception {e} occurred.")
+		break_condition = "process ceased to exist."
+		break
+	
+	# Print update
+	print(f"\r\tCPU Usage: {Fore.CYAN}{pu}{Style.RESET_ALL}", flush=True, end='')
+	
+	# Check for low usage
+	if pu < THRESHOLD:
+		below_count += 1
+		print(f" [{Fore.RED} CPU USAGE BELOW THRESHOLD {Style.RESET_ALL}(Count {below_count} of {NUM_BELOW})]", flush=True, end='')
+	else:
+		print(" "*60, flush=True, end='')
+		below_count = 0
+	
+	# Check for low usage quit condition
+	if below_count >= NUM_BELOW:
+		print(f"\nExiting; CPU usage too low.")
+		break_condition = "process CPU usage persisted at a low level."
+		break
+		
+	time.sleep(TIME_PAUSE)
+
+print(f"\r{Fore.BLUE} Sending process complete email to {Fore.YELLOW}{EMAIL}{Fore.BLUE}.{Style.RESET_ALL}")
+
+send_email(EMAIL, f"Process {PID} Completed", f"The process (PID={PID}) has completed. The detected break condition was '{break_condition}'.\n\nThis is an automated message.", local_pass)
