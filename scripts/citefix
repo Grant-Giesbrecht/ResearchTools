@@ -8,6 +8,7 @@ import getopt, sys
 #TODO: Could automatically change title
 #TODO: Could remove when percent signs and other special characters are done incorrectly
 #TODO: Could remove abstract
+#TODO: Automatically remove indentation and add back exactly one tab. 
 
 TEST_MODE = False
 LOG_LEVEL = logging.INFO
