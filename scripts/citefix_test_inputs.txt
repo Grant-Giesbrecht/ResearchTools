@@ -1,0 +1,27 @@
+FROM RIS TO BIBTEX GENERATOR
+
+@Article{Bockstiegel2014,
+author={Bockstiegel, C.
+and Gao, J.
+and Vissers, M. R.
+and Sandberg, M.
+and Chaudhuri, S.
+and Sanders, A.
+and Vale, L. R.
+and Irwin, K. D.
+and Pappas, D. P.},
+title={Development of a Broadband NbTiN Traveling Wave Parametric Amplifier for MKID Readout},
+journal={Journal of Low Temperature Physics},
+year={2014},
+month={Aug},
+day={01},
+volume={176},
+number={3},
+pages={476-482},
+abstract={The sensitivity of microwave kinetic inductance detectors (MKIDs) using dissipation readout is limited by the noise temperature of the cryogenic amplifier, usually a HEMT with {\$}{\$}T{\_}n {\backslash}sim {\$}{\$}5 K. A lower noise amplifier is required to improve NEP and reach the photon noise limit at millimeter wavelengths. Eom et al. have proposed a kinetic inductance traveling wave (KIT) parametric amplifier (also called the dispersion-engineered travelling wave kinetic inductance parametric amplifier) that utilizes the nonlinearity with very low dissipation of NbTiN. This amplifier has the promise to achieve quantum limited noise, broad bandwidth, and high dynamic range, all of which are required for ideal MKID dissipation readout. We have designed a KIT amplifier which consists of a 2.2 m long coplanar waveguide transmission line fabricated in a double spiral format, with periodic loadings and impedance transformers at the input/output ports on a 2 by 2 cm Si chip. The design was fabricated with 20 nm NbTiN films. The device has shown over 10 dB of gain from 4 to 11 GHz. We have found the maximum gain is limited by abrupt breakdown at defects in the transmission line in the devices. By cascading two devices, more than 20 dB of gain was achieved from 4.5 to 12.5 GHz, with a peak of {\$}{\$}{\backslash}sim {\$}{\$}27 dB.},
+issn={1573-7357},
+doi={10.1007/s10909-013-1042-z},
+url={https://doi.org/10.1007/s10909-013-1042-z}
+}
+
+

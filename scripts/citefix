@@ -8,7 +8,8 @@ import getopt, sys
 #TODO: Could automatically change title
 #TODO: Could remove when percent signs and other special characters are done incorrectly
 #TODO: Could remove abstract
-#TODO: Automatically remove indentation and add back exactly one tab. 
+#TODO: Add help text
+#TODO: Remove newlines from within entires (for example, from within author entry).
 
 TEST_MODE = False
 LOG_LEVEL = logging.INFO
@@ -88,6 +89,34 @@ while running:
 
 if n > 1:
 	logging.info(f"Replaced {n-1} non-standard characters.")
+
+# Remove leading whitespace from each line and replace with a tab char
+tab_char = "\t"
+running = True
+find_idx = 1
+while running:
+	
+	# Find occurance, break if not found
+	idx = find_nth(text, "\n", find_idx)
+	find_idx += 1
+	if idx == -1:
+		running = False
+		continue
+	
+	# Trim leading whitespace
+	text = text[:idx+1] + text[idx+1:].lstrip()
+	
+	#---- If next character is last }, dont add tab
+	
+	# Find index of close
+	idx_last_close = text.rfind('}')
+	
+	# Find index of last newline before close
+	idx_last_newline = text.rfind('\n', 0, idx_last_close)
+	
+	# Is this newline char the last one before close?
+	if idx != idx_last_newline:
+		text = text[:idx+1] + tab_char + text[idx+1:]
 
 print("\nFormatted Text:")
 print(f"{Fore.LIGHTBLUE_EX}{text}{Style.RESET_ALL}")
