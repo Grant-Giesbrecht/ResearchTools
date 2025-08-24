@@ -1,5 +1,17 @@
 import json
 import matplotlib.pyplot as plt
+import argparse
+import mplcursors
+
+parser = argparse.ArgumentParser()
+parser.add_argument('filename')
+# parser.add_argument('-f', '--fft', help='show fft of data', action='store_true')
+# parser.add_argument('--trimdc', help='Removes DC from FFT data', action='store_true')
+# parser.add_argument('--f1', help='Plot F1 file over FFT', action='store_true')
+# parser.add_argument('-z', '--zerocross', help='Zero-crossing analysis', action='store_true')
+# parser.add_argument('--zcmin', help='Zero-crossing analysis plot, minimum Y value', type=float)
+# parser.add_argument('--zcmax', help='Zero-crossing analysis plot, maximum Y value', type=float)
+args = parser.parse_args()
 
 def plot_xy_from_json(filename):
 	"""
@@ -96,3 +108,7 @@ def plot_xy_from_json2(filename):
 				visited.update([name, candidate])
 	
 	plt.show()
+
+if __name__ == "__main__":
+	
+	plot_xy_from_json(args.filename)
