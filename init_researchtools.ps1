@@ -8,16 +8,17 @@ param(
 )
 
 # Create a PS function to call plot_json_xy.py
+$PlotJSONXyScriptPath = Join-Path -Path $ProjectPath -ChildPath "scripts\plot_json_xy.py"
 function plot_json_xy {
 	param(
 		[Parameter(ValueFromRemainingArguments=$true)]
 		[string[]]$args
 	)
-	$ScriptPath = Join-Path -Path $ProjectPath -ChildPath "scripts\plot_json_xy.py"
-	python $ScriptPath @args
+	
+	python $PlotJSONXyScriptPath @args
 }
 
 # Success message if requested
 if ($Verbose){
-	Write-Output "Added ResearchTools at path:"+$ProjectPath
+	Write-Output "Added ResearchTools at path:" $ProjectPath
 }
