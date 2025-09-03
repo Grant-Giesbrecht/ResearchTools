@@ -29,6 +29,17 @@ function univpath {
 	python $UnivPathScriptPath @args
 }
 
+# Create a PS function to call plot_json_xy.py
+$ViewJsonScriptPath = Join-Path -Path $ProjectPath -ChildPath "scripts\view_json.py"
+function viewjson {
+	param(
+		[Parameter(ValueFromRemainingArguments=$true)]
+		[string[]]$args
+	)
+	
+	python $ViewJsonScriptPath @args
+}
+
 # Success message if requested
 if ($Verbose){
 	Write-Output "Added ResearchTools at path:" $ProjectPath
