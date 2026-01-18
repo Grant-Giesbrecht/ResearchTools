@@ -2,14 +2,13 @@ import json
 import matplotlib.pyplot as plt
 import argparse
 import mplcursors
-from ganymede import dict_summary
+from stardust.io import dict_summary
 import sys
 
 parser = argparse.ArgumentParser()
 parser.add_argument('filename')
 parser.add_argument('-v', '--verbose', help="Verbosity. Options=0, 1, 2. Default=1.", type=int, default=1)
 args = parser.parse_args()
-
 
 
 if __name__ == "__main__":
